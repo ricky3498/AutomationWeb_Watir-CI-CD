@@ -1,0 +1,38 @@
+name: Watir RSpec Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🟢 Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+
+      - name: 📦 Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: 🚀 Run tests (headless Chrome)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libgbm-dev chromium-browser
+          export CHROME_BIN=/usr/bin/chromium-browser
+          bundle exec rspec
+
+      - name: 📤 Upload HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: watir-rspec-report
+          path: report.html
