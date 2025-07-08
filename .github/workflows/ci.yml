@@ -32,7 +32,7 @@ jobs:
           bundle exec rspec
 
       - name: 📤 Upload HTML report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: watir-rspec-report
           path: report.html
